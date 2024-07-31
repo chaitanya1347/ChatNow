@@ -37,6 +37,7 @@ function WorkArea() {
 
   const ENDPOINT =  "https://chatnow-wfsx.onrender.com" //"http://localhost:5000";
   var socket,selectedChatCompare;
+
   socket = io(ENDPOINT);
 
 
@@ -70,7 +71,7 @@ function WorkArea() {
 
 
   const sendMessage = async () => {
-    if(messageContent!="" || messageContent!=" "){s
+    if(messageContent!="" || messageContent!=" "){
         const {data } = await axios.post("/messages/",
           {
             content: messageContent,
