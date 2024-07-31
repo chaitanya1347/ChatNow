@@ -75,6 +75,8 @@ function WorkArea() {
 
   const sendMessage = async () => {
     if(messageContent!=="" || messageContent!==" "){
+      
+        setMessageContent('');
         const {data } = await axios.post("/messages/",
           {
             content: messageContent,
@@ -83,11 +85,11 @@ function WorkArea() {
           config
         )
         setRefresh(!refresh);
-        setConversation(prevConversation => [...prevConversation, data]);
-        setMessageContent('');
+        
         
         socket.emit("new message",data);
         socket.emit("doRefresh");
+        setConversation(prevConversation => [...prevConversation, data]);
     }
   };
 
