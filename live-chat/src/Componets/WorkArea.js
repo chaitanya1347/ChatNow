@@ -38,14 +38,23 @@ function WorkArea() {
   const ENDPOINT =  "https://chatnow-wfsx.onrender.com" //"http://localhost:5000";
   var socket,selectedChatCompare;
 
-  
-  useEffect(()=>{
-    socket = io(ENDPOINT);
-    socket.emit("setup",userInfo);
-    socket.on("connected",()=>{setsocketConnected(true);}); 
-    socket.on("typing", () => {setIsTyping(true)});
-    socket.on("stop typing", () => setIsTyping(false));
-  },[])
+  const [socket, setSocket] = useState(null); // State to hold the socket instance
+
+
+  useEffect(() => {
+    const newSocket = io(ENDPOINT);
+    setSocket(newSocket);
+  }, []); // Runs once on component mount to initialize socket
+
+  useEffect(() => {
+    // Wait for socket to be initialized and connected
+    if (socket) {
+      socket.emit("setup",userInfo);
+      socket.on("connected", () => {
+        setSocketConnected(true);
+      });
+    }
+  }, [socket]); // Runs when socket changes (initialization)
 
   const config = {
     headers : {
@@ -107,12 +116,15 @@ function WorkArea() {
   };
   // console.log(istyping);
   
-  useEffect(() => { 
-    socket.on("doingRefresh", () => { 
-      setRefresh(!refresh);
-      setRenameRefresh(!renameRefresh);
-    });
-  });
+  useEffect(() => {
+    // Execute code dependent on socket being connected
+    if (socketConnected && socket) {
+      socket.on("doingRefresh", () => {
+        setRefresh(prev => !prev);
+        setRenameRefresh(prev => !prev);
+      });
+    }
+  }, [socketConnected, socket]);
 
   useEffect(() => { 
     socket.on("messageRecieved", (newMessageRecieved) => { 
