@@ -1,4 +1,4 @@
-# MERN Chat Application
+# CHAT NOW
 
 This is a full-stack chat application built using the MERN (MongoDB, Express.js, React.js, Node.js) stack.
 
