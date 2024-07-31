@@ -38,10 +38,9 @@ function WorkArea() {
   const ENDPOINT =  "https://chatnow-wfsx.onrender.com" //"http://localhost:5000";
   var socket,selectedChatCompare;
 
-  socket = io(ENDPOINT);
-
-
+  
   useEffect(()=>{
+    socket = io(ENDPOINT);
     socket.emit("setup",userInfo);
     socket.on("connected",()=>{setsocketConnected(true);}); 
     socket.on("typing", () => {setIsTyping(true)});
@@ -71,7 +70,7 @@ function WorkArea() {
 
 
   const sendMessage = async () => {
-    if(messageContent!="" || messageContent!=" "){
+    if(messageContent!=="" || messageContent!==" "){
         const {data } = await axios.post("/messages/",
           {
             content: messageContent,

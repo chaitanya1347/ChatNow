@@ -22,9 +22,9 @@ function Online_users() {
     };
     var socket;
     const ENDPOINT =  "https://chatnow-wfsx.onrender.com" //"http://localhost:5000";
-    socket = io(ENDPOINT);
     
     useEffect(()=>{
+      socket = io(ENDPOINT);
       socket.emit("setup",userInfo);
       socket.on("connection"); 
     },[])
