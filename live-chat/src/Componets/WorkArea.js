@@ -36,15 +36,10 @@ function WorkArea() {
   const chatEndRef = useRef(null);
 
   const ENDPOINT =  "https://chatnow-wfsx.onrender.com" //"http://localhost:5000";
-  var selectedChatCompare;
+  var socket , selectedChatCompare;
 
-  const [socket, setSocket] = useState(null); // State to hold the socket instance
-
-
-  useEffect(() => {
-    const newSocket = io(ENDPOINT);
-    setSocket(newSocket);
-  }, []); // Runs once on component mount to initialize socket
+  
+  socket = io(ENDPOINT);
 
   useEffect(() => {
     // Wait for socket to be initialized and connected
@@ -54,7 +49,7 @@ function WorkArea() {
         setSocketConnected(true);
       });
     }
-  }, [socket]); // Runs when socket changes (initialization)
+  }, []); 
 
   const config = {
     headers : {
