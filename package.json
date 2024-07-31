@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon live-chat-backend/index.js",
+    "start": "node live-chat-backend/index.js",
     "build": "npm install && npm install --prefix live-chat && npm run build --prefix live-chat"
   },
   "author": "",
