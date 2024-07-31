@@ -220,7 +220,7 @@ function WorkArea() {
       {/* {istyping ? <div> Typing....</div> : <></> } */}
       <div className={'type-box' + light_dark_mode}>
           <input placeholder={"Type a Message"} value={messageContent} className={'search-box'+ light_dark_mode} 
-            onChange={setMessageContent(e.target.value)}
+            onChange={(e)=>{setMessageContent(e.target.value)}}
           onKeyDown = {(e)=>{
             if(e.code === "Enter"){
               sendMessage();
