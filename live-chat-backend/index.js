@@ -25,21 +25,29 @@ const connectDb  = async ()=>{
 }
     
 connectDb();
-// ---------------------------------------------Deployment--------------------------------
 
-const __dirname = path.resolve();
-if(process.env.NODE_ENV === 'production'){
-    app.use(express.static(path.join(__dirname, 'live-chat/build')));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(__dirname, 'frontend','build', 'index.html'));
-    }); 
-
-}
-
-// ---------------------------------------------Deployment--------------------------------
 app.use('/user',userRoutes); 
 app.use('/chat',chatRoutes);
 app.use("/messages", messageRoutes);
+
+// ---------------------------------------------Deployment--------------------------------
+
+const __dirname1 = path.resolve(__dirname, '../');  
+if(process.env.NODE_ENV === 'production'){
+    app.use(expres.static(path.join(__dirname1, 'live-chat/build')));
+    app.get('*', (req, res) => {
+        const fs= path.join(__dirname1, 'live-chat','build', 'index.html');
+        console.log(fs)
+      res.sendFile(path.join(__dirname1, 'live-chat','build', 'index.html'));
+    }); 
+
+}else{
+    app.get('/', (req, res) => {
+        res.send("Server is Running in Development Mode");
+    })
+}
+
+// ---------------------------------------------Deployment--------------------------------
 
 app.use(notFound);
 app.use(errorHandler);

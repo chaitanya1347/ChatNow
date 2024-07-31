@@ -1,58 +1,59 @@
-import React, { useEffect, useState } from 'react'
-import {useData} from "../Context/ChatProvider"
-import "./style.css"
+import React, { useEffect, useState } from 'react';
+import { useData } from "../Context/ChatProvider";
+import "./style.css";
 import SearchIcon from '@mui/icons-material/Search';
 import { IconButton } from '@mui/material';
-import logo from "./online-users.png"
-import {AnimatePresence, motion} from "framer-motion";
+import logo from "./online-users.png";
+import { AnimatePresence, motion } from "framer-motion";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function Online_groups() {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    const [userData,setUserData] = useState([]);
-    const {refresh,setRefresh}  = useData();
-    const [userSearch,setUserSearch] = useState("");
+    const [userData, setUserData] = useState([]);
+    const { refresh, setRefresh } = useData();
+    const [userSearch, setUserSearch] = useState("");
     const navigate = useNavigate();
     const config = {
-        headers :{
-            Authorization : `Bearer ${userInfo.token}`,
+        headers: {
+            Authorization: `Bearer ${userInfo.token}`,
         },
-    }
+    };
 
-    // it is just to show group on available groups section uses CHAT MODEL
-    useEffect(()=>{
-        const fetchSearchedUsers =async ()=>{
-            try{
-                const {data} = await axios.get('/chat/group',{
+    // Fetch users based on search input
+    useEffect(() => {
+        const fetchSearchedUsers = async () => {
+            try {
+                const { data } = await axios.get('/chat/group', {
                     params: {
-                        search : userSearch,
-                        userId : userInfo._id,
+                        search: userSearch,
+                        userId: userInfo._id,
                     },
-                }   );
+                });
                 setUserData(data);
-            }catch(error){
-                console.error("Not able to Search Users" ,error);
+            } catch (error) {
+                console.error("Not able to Search Users", error);
             }
-        }
-        
-        fetchSearchedUsers();
-    },[userSearch]);
+        };
 
-    
-    //this Create a single chat in CHAT DATABASE
-    const showChat = async (chat)=>{
-        try{
-            const {data}  = await axios.post("/chat",{
-                userId : chat._id
-            },config);
+        fetchSearchedUsers();
+    }, [userSearch]);
+
+    // Function to create a chat in CHAT DATABASE
+    const showChat = async (chat) => {
+        try {
+            const { data } = await axios.post("/chat", {
+                userId: chat._id
+            }, config);
             setRefresh(!refresh);
             return data;
-        }catch(error){
-            console.error("Not Able to Access Chat",error);
+        } catch (error) {
+            console.error("Not Able to Access Chat", error);
             return null;
         }
-    }
+    };
+
+    // Function to get name of a conversation
     const getName = (conversation) => {
         if (!conversation) return ''; // Handle case where conversation is null or undefined
 
@@ -69,55 +70,63 @@ function Online_groups() {
         }
     };
 
+    // Inline style for image
     let img_style = {
-        height:"2.5 rem",
-        width:"2.5rem"
+        height: "2.5rem",
+        width: "2.5rem"
     };
 
-  return (
+    return (
         <AnimatePresence>
-        <motion.div initial={{scale:0,opacity:0}}
-                    animate={{scale:1,opacity:1}}
-                    exit={{scale:0,opacity:0}}
-                    transition={{
-                        ease:"linear",
-                        duration:"0.3"
-                    }}
-                   className='list-container'>
-            <div className='ug-header'>
-                <img src= {logo} style= {img_style} alt="Welcome page " />
-                <p className='ug-title'>Online Groups</p>
-            </div>
+            <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                transition={{
+                    ease: "linear",
+                    duration: "0.3"
+                }}
+                className='list-container'
+            >
+                <div className='ug-header'>
+                    <img src={logo} style={img_style} alt="Welcome page " />
+                    <p className='ug-title'>Online Groups</p>
+                </div>
 
-            <div className='sb-search'>
-                <IconButton>
-                    <SearchIcon/>
-                </IconButton>
-                <input placeholder='Search user' className='search-box' onChange={(e)=>{
-                    setUserSearch(e.target.value);
-                }}/>
+                <div className='sb-search'>
+                    <IconButton>
+                        <SearchIcon />
+                    </IconButton>
+                    <input
+                        placeholder='Search user'
+                        className='search-box'
+                        onChange={(e) => {
+                            setUserSearch(e.target.value);
+                        }}
+                    />
+                </div>
 
-            </div>
-
-            <div className='ug-list'>
-                    
-                    {userData.map((chat)=>{
-                            return(
-                            <motion.div whileHover={{scale:1.02}} whileTap={{scale:0.98 }} className='lst-items' onClick={async ()=>{
-                                        const chatData = await showChat(chat);
-                                        const ChatName = getName(chatData); // Ensure chatData is used here
-                                        navigate(`/app/chat/${chatData._id}/${encodeURIComponent(ChatName)}`);
-                                    }
-                                }>
-                                <p className='con-icon'>{chat.chatName[0].toUpperCase()}</p>
-                                <p className='con-name'>{chat.chatName}</p>
-                            </motion.div>
-                        )
-                     })} 
-            </div>
-        </motion.div>
+                <div className='ug-list'>
+                    {userData.map((chat) => (
+                        <motion.div
+                            key={chat._id} // Unique key for each chat
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            className='lst-items'
+                            onClick={async () => {
+                                const chatData = await showChat(chat);
+                                const ChatName = getName(chatData); // Ensure chatData is used here
+                                navigate(`/app/chat/${chatData._id}/${encodeURIComponent(ChatName)}`);
+                            }}
+                        >
+                            <p className='con-icon'>{chat.chatName[0].toUpperCase()}</p>
+                            <p className='con-name'>{chat.chatName}</p>
+                        </motion.div>
+                    ))}
+                </div>
+            </motion.div>
         </AnimatePresence>
-  )
+    );
 }
 
-export default Online_groups
+export default Online_groups;
