@@ -36,7 +36,7 @@ function WorkArea() {
   const chatEndRef = useRef(null);
 
   const ENDPOINT =  "https://chatnow-wfsx.onrender.com" //"http://localhost:5000";
-  var socket,selectedChatCompare;
+  var selectedChatCompare;
 
   const [socket, setSocket] = useState(null); // State to hold the socket instance
 
