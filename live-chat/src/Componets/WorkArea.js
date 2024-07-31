@@ -70,24 +70,24 @@ function WorkArea() {
 
 
   const sendMessage = async () => {
-      socket.emit("stop typing",_id);
-      const {data } = await axios.post("/messages/",
-        {
-          content: messageContent,
-          chatId: _id,
-        },
-        config
-      )
-      setRefresh(!refresh);
-      setConversation(prevConversation => [...prevConversation, data]);
-      setMessageContent('');
-
-      socket.emit("new message",data);
-      socket.emit("doRefresh");
+    if(messageContent!="" || messageContent!=" "){s
+        const {data } = await axios.post("/messages/",
+          {
+            content: messageContent,
+            chatId: _id,
+          },
+          config
+        )
+        setRefresh(!refresh);
+        setConversation(prevConversation => [...prevConversation, data]);
+        setMessageContent('');
+        
+        socket.emit("new message",data);
+        socket.emit("doRefresh");
+    }
   };
 
   const typingHandler = (e) => {
-    setMessageContent(e.target.value);  
     if (!socketConnected) return;
     if (!typing) {
       setTyping(true);
@@ -219,7 +219,7 @@ function WorkArea() {
       {/* {istyping ? <div> Typing....</div> : <></> } */}
       <div className={'type-box' + light_dark_mode}>
           <input placeholder={"Type a Message"} value={messageContent} className={'search-box'+ light_dark_mode} 
-            onChange={typingHandler}
+            onChange={setMessageContent(e.target.value)}
           onKeyDown = {(e)=>{
             if(e.code === "Enter"){
               sendMessage();
