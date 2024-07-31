@@ -25,7 +25,7 @@ function WorkArea() {
   const [openForm, setOpenForm] = useState(false);
   const [renameRefresh,setRenameRefresh] = useState(false);
   const [currentChat,setCurrentChat] = useState(null);
-  const [socketConnected,setsocketConnected] = useState(false);
+  const [socketConnected,setSocketConnected] = useState(false);
   const [typing,setTyping] = useState(false);
   const [istyping,setIsTyping] = useState(false);
 
