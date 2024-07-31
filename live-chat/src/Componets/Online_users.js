@@ -21,7 +21,7 @@ function Online_users() {
         },
     };
     var socket;
-    const ENDPOINT =  "http://localhost:5000";
+    const ENDPOINT =  "https://chatnow-wfsx.onrender.com" //"http://localhost:5000";
     socket = io(ENDPOINT);
     
     useEffect(()=>{

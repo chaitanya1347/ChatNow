@@ -35,7 +35,7 @@ function WorkArea() {
   let light_dark_mode = (lightTheme ? "" : " <dark></dark>");
   const chatEndRef = useRef(null);
 
-  const ENDPOINT =  "http://localhost:5000";
+  const ENDPOINT =  "https://chatnow-wfsx.onrender.com" //"http://localhost:5000";
   var socket,selectedChatCompare;
   socket = io(ENDPOINT);
 
