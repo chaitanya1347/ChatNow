@@ -27,14 +27,14 @@ Make sure you have the following installed:
 ### Clone the repository
 
 ```bash
-git clone https://github.com/piyush-eon/mern-chat-app
+git clone https://github.com/chaitanya1347/ChatNow.git
 cd mern-chat-app
 ```
 
 ### Clone the repository
 
 ```bash
-git clone https://github.com/piyush-eon/mern-chat-app
+git clone https://github.com/chaitanya1347/ChatNow.git
 ```
 ### Go to the project directory
 
